@@ -14,12 +14,6 @@ const DiscountCalc = () => {
     }
   };
 
-  const inputFieldEl = document.getElementById("result");
-
-  function clearResult(){
-    inputFieldEl.value = "";
-  }
-
   return (
     <div className="card mt-5 mb-5 discount">
       <h2>Discount Calculator</h2>
