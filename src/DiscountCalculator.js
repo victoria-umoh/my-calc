@@ -41,7 +41,7 @@ const DiscountCalculator = () => {
       <div className="row">
             <div style={{ marginBottom: "10px" }}>
                 <label className="form-label">
-                Original Price ($):</label>
+                Bid ($):</label>
                 <input
                     className="form-control"
                     type="number"
@@ -54,7 +54,7 @@ const DiscountCalculator = () => {
 
             <div style={{ marginBottom: "10px" }}>
                 <label for="" className="form-label">
-                Discount Percentage (%): </label>
+                Placement Bid (%): </label>
                 <input
                     className="form-control"
                     type="number"
@@ -70,7 +70,7 @@ const DiscountCalculator = () => {
       
       <div style={{ marginBottom: "10px" }}>
         <label className="form-label">
-          Final Price ($): </label>
+          Final Bid ($): </label>
           <input
             className="form-control"
             type="number"
