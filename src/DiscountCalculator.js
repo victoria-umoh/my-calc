@@ -10,10 +10,12 @@ const DiscountCalculator = () => {
     setBid(value);
     if (value && bidPlacement) {
       const placementBidDecimal = bidPlacement / 100;
-      const calculatedTotalBid = value * placementBidDecimal;
-      const calculatedFinalPrice = calculatedTotalBid + value;
-      setTotalBid(calculatedTotalBid.toFixed(2));
-      setFinalPrice(calculatedFinalPrice.toFixed(2));
+      const calculatedFinalPrice = value * placementBidDecimal + value;
+      if (!isNaN(calculatedFinalPrice)) {
+        setFinalPrice(calculatedFinalPrice.toFixed(2));
+      } else {
+        setFinalPrice(""); // Clear final price if calculation fails
+      }
     }
   };
 
@@ -21,12 +23,14 @@ const DiscountCalculator = () => {
     setBidPlacement(value);
     if (value && Bid) {
       const placementBidDecimal = value / 100;
-      const calculatedTotalBid = Bid * placementBidDecimal;
-      const calculatedFinalPrice = calculatedTotalBid + Bid;
-      setTotalBid(calculatedTotalBid.toFixed(2));
-      setFinalPrice(calculatedFinalPrice.toFixed(2));
+      const calculatedFinalPrice = Bid * placementBidDecimal + Bid;
+      if (!isNaN(calculatedFinalPrice)) {
+        setFinalPrice(calculatedFinalPrice.toFixed(2));
+      } else {
+        setFinalPrice(""); // Clear final price if calculation fails
+      }
     }
-  };
+  };  
 
   const handleFinalPriceChange = (value) => {
     setFinalPrice(value);
@@ -46,9 +50,18 @@ const DiscountCalculator = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Backspace") {
+      setBid("");
+      setBidPlacement("");
+      setTotalBid("");
+      setFinalPrice("");
+    }
+  };
+
   return (
-    <div className="card mt-5 discount">
-      <h2>Jay's Discount Calculator ❤️</h2>
+    <div className="card mt-5 discount" onKeyDown={handleKeyDown}>
+      <h2 className="text-center">Jay's Bid Calculator ❤️</h2>
       <div className="row">
         <div className="mt-4">
           <label className="form-label">Bid ($):</label>
@@ -70,7 +83,7 @@ const DiscountCalculator = () => {
           />
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 d-none">
           <label className="form-label">Total Bid ($): </label>
           <input
             className="form-control"
