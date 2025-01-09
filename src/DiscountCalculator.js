@@ -1,37 +1,48 @@
 import React, { useState } from "react";
 
 const DiscountCalculator = () => {
-  const [originalPrice, setOriginalPrice] = useState("");
-  const [discountPercent, setDiscountPercent] = useState("");
+  const [Bid, setBid] = useState("");
+  const [bidPlacement, setBidPlacement] = useState("");
+  const [totalBid, setTotalBid] = useState("");
   const [finalPrice, setFinalPrice] = useState("");
 
-  const handleOriginalPriceChange = (value) => {
-    setOriginalPrice(value);
-    if (value && discountPercent) {
-      const calculatedFinalPrice = value - (value * discountPercent) / 100;
+  const handleBidChange = (value) => {
+    setBid(value);
+    if (value && bidPlacement) {
+      const placementBidDecimal = bidPlacement / 100;
+      const calculatedTotalBid = value * placementBidDecimal;
+      const calculatedFinalPrice = calculatedTotalBid + value;
+      setTotalBid(calculatedTotalBid.toFixed(2));
       setFinalPrice(calculatedFinalPrice.toFixed(2));
-    } else if (value && finalPrice) {
-      const calculatedDiscount = ((value - finalPrice) / value) * 100;
-      setDiscountPercent(calculatedDiscount.toFixed(2));
     }
   };
 
-  const handleDiscountPercentChange = (value) => {
-    setDiscountPercent(value);
-    if (value && originalPrice) {
-      const calculatedFinalPrice = originalPrice - (originalPrice * value) / 100;
+  const handleBidPlacementChange = (value) => {
+    setBidPlacement(value);
+    if (value && Bid) {
+      const placementBidDecimal = value / 100;
+      const calculatedTotalBid = Bid * placementBidDecimal;
+      const calculatedFinalPrice = calculatedTotalBid + Bid;
+      setTotalBid(calculatedTotalBid.toFixed(2));
       setFinalPrice(calculatedFinalPrice.toFixed(2));
     }
   };
 
   const handleFinalPriceChange = (value) => {
     setFinalPrice(value);
-    if (value && originalPrice) {
-      const calculatedDiscount = ((originalPrice - value) / originalPrice) * 100;
-      setDiscountPercent(calculatedDiscount.toFixed(2));
-    } else if (value && discountPercent) {
-      const calculatedOriginalPrice = value / (1 - discountPercent / 100);
-      setOriginalPrice(calculatedOriginalPrice.toFixed(2));
+    if (value && Bid) {
+      // Calculate Placement Bid Percentage
+      const calculatedTotalBid = value - Bid;
+      const calculatedPlacementBid = (calculatedTotalBid / Bid) * 100;
+      setTotalBid(calculatedTotalBid.toFixed(2));
+      setBidPlacement(calculatedPlacementBid.toFixed(2));
+    } else if (value && bidPlacement) {
+      // Calculate Original Bid
+      const placementBidDecimal = bidPlacement / 100;
+      const calculatedBid = value / (1 + placementBidDecimal);
+      const calculatedTotalBid = value - calculatedBid;
+      setBid(calculatedBid.toFixed(2));
+      setTotalBid(calculatedTotalBid.toFixed(2));
     }
   };
 
@@ -39,46 +50,45 @@ const DiscountCalculator = () => {
     <div className="card mt-5 discount">
       <h2>Jay's Discount Calculator ❤️</h2>
       <div className="row">
-            <div style={{ marginBottom: "10px" }}>
-                <label className="form-label">
-                Bid ($):</label>
-                <input
-                    className="form-control"
-                    type="number"
-                    value={originalPrice}
-                    onChange={(e) => handleOriginalPriceChange(Number(e.target.value))}
-                    style={{ marginLeft: "10px", width: "100%" }}
-                />
-                
-            </div>
+        <div className="mt-4">
+          <label className="form-label">Bid ($):</label>
+          <input
+            className="form-control"
+            type="number"
+            value={Bid}
+            onChange={(e) => handleBidChange(Number(e.target.value))}
+          />
+        </div>
 
-            <div style={{ marginBottom: "10px" }}>
-                <label for="" className="form-label">
-                Placement Bid (%): </label>
-                <input
-                    className="form-control"
-                    type="number"
-                    value={discountPercent}
-                    onChange={(e) =>
-                    handleDiscountPercentChange(Number(e.target.value))
-                    }
-                    style={{ marginLeft: "10px", width: "100%" }}
-                />
-                
-            </div>
-      </div>
-      
-      <div style={{ marginBottom: "10px" }}>
-        <label className="form-label">
-          Final Bid ($): </label>
+        <div className="mt-4">
+          <label className="form-label">Placement Bid (%): </label>
+          <input
+            className="form-control"
+            type="number"
+            value={bidPlacement}
+            onChange={(e) => handleBidPlacementChange(Number(e.target.value))}
+          />
+        </div>
+
+        <div className="mt-4">
+          <label className="form-label">Total Bid ($): </label>
+          <input
+            className="form-control"
+            type="number"
+            value={totalBid}
+            readOnly
+          />
+        </div>
+
+        <div className="mt-4 mb-3">
+          <label className="form-label">Final Bid ($): </label>
           <input
             className="form-control"
             type="number"
             value={finalPrice}
             onChange={(e) => handleFinalPriceChange(Number(e.target.value))}
-            style={{ marginLeft: "10px", width: "100%" }}
           />
-        
+        </div>
       </div>
     </div>
   );
